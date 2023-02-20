@@ -2,7 +2,7 @@ services:
 
   vripper:
     container_name: vripper
-    image: death-claw/vripper-project:3.5.4
+    image: iamklh/vripper-project:latest
     ports:
       - "8080:8080/tcp"
     volumes:

@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.5.7] - 2023-02-19
+
+### Changed
+
+- Removed DamImage
+
+## [3.5.6] - 2023-02-16
+
+### Changed
+
+- Stole code from stoutsock - ImageBAM
+
+## [3.5.5] - 2023-01-29
+
+### Changed
+
+- Stole code from kgscorpio - DamImage
+
 ## [3.5.4] - 2021-05-29
 
 ### Changed

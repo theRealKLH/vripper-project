@@ -11,8 +11,27 @@ import tn.mnlr.vripper.exception.XpathException;
 import tn.mnlr.vripper.services.HostService;
 import tn.mnlr.vripper.services.XpathService;
 
+import java.time.Instant;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import tn.mnlr.vripper.services.ConnectionService;
+import tn.mnlr.vripper.services.HtmlProcessorService;
+
+
 import java.util.Optional;
 import java.util.UUID;
+
+import java.io.*;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 @Service
 @Slf4j
@@ -21,14 +40,22 @@ public class ImageBamHost extends Host {
   private static final String host = "imagebam.com";
   private static final String IMG_XPATH = "//img[contains(@class,'main-image')]";
   private static final String CONTINUE_XPATH = "//*[contains(text(), 'Continue')]";
-
+  
+  private final ConnectionService cm;
   private final HostService hostService;
   private final XpathService xpathService;
+  private final HtmlProcessorService htmlProcessorService;
 
   @Autowired
-  public ImageBamHost(HostService hostService, XpathService xpathService) {
+  public ImageBamHost(
+      ConnectionService cm,
+      HostService hostService,
+      XpathService xpathService,
+      HtmlProcessorService htmlProcessorService) {
+    this.cm = cm;
     this.hostService = hostService;
     this.xpathService = xpathService;
+    this.htmlProcessorService = htmlProcessorService;
   }
 
   @Override
@@ -45,19 +72,28 @@ public class ImageBamHost extends Host {
   public HostService.NameUrl getNameAndUrl(final String url, final HttpClientContext context)
       throws HostException {
 
-    HostService.Response response = hostService.getResponse(url, context);
-    Document doc = response.getDocument();
+    Document doc = hostService.getResponse(url, context).getDocument();
 
-    try {
-      log.debug(String.format("Looking for xpath expression %s in %s", CONTINUE_XPATH, url));
-      if (xpathService.getAsNode(doc, CONTINUE_XPATH) != null) {
-        // Button detected. No need to actually click it, just make the call again.
-        response = hostService.getResponse(url, context);
-        doc = response.getDocument();
-      }
-    } catch (XpathException e) {
-      throw new HostException(e);
-    }
+	  
+	HttpClient client = cm.getClient().build();
+	HttpGet httpGet = cm.buildHttpGet(url, context);
+	httpGet.addHeader("Referer", url);
+	long expireTime=Instant.now().getEpochSecond();
+	expireTime+=6*60*60*1000;
+	httpGet.addHeader("Cookie", "nsfw_inter=1");
+	HttpResponse httpResponse;
+	
+	try {
+		httpResponse = client.execute(httpGet);
+	} catch (Exception e) {
+		throw new HostException(e);
+	}
+	  
+	try {
+		doc = htmlProcessorService.clean(EntityUtils.toString(httpResponse.getEntity()));
+	} catch (Exception e) {
+		throw new HostException(e);
+	}
 
     Node imgNode;
     try {
