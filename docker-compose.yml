@@ -2,7 +2,7 @@ services:
 
   vripper:
     container_name: vripper
-    image: iamklh/vripper-project:latest
+    image: ghcr.io/therealklh/vripper-project:latest
     ports:
       - "8080:8080/tcp"
     volumes:
