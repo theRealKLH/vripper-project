@@ -10,7 +10,7 @@ RUN mvn package -Dmaven.test.skip=true -T 2C
 FROM openjdk:11.0.11-jre-slim AS run
 
 ARG VERSION
-ENV VERSION=${VERSION:-unspecified}
+ENV VERSION=${VERSION:-3.5.7}
 ENV JAR_FILE=vripper-server-${VERSION}-web.jar
 ENV VRIPPER_DIR=/vripper
 
@@ -19,6 +19,6 @@ COPY --from=build /build/vripper-server/target/${JAR_FILE} ${VRIPPER_DIR}
 WORKDIR ${VRIPPER_DIR}
 RUN mkdir downloads
 
-EXPOSE 8080/tcp
+EXPOSE 8080/tcp 
 
 CMD java -Dbase.dir.name=base -Duser.home=${VRIPPER_DIR}/downloads -jar ${VRIPPER_DIR}/${JAR_FILE}

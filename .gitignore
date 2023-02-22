@@ -1,7 +1,16 @@
+.DS_Store
+.settings/
+.vscode/
+
 /**/*/static
 /**/*/node_modules
 /**/*/target
 /**/*/build-dir
 /**/*/java-runtime
+
 .idea
 .vripper
+.release-env
+.classpath
+.docker-creds
+.project
