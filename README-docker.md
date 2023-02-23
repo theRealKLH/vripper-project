@@ -33,5 +33,5 @@ If **death-claw** wishes:
 - Run VRipper in container as non-root user.
 - Resolve non-root user file permissions.
 - Automatically build and tag a Docker image for each tagged version of VRipper.
-- Push images to the GitHub Packages Docker registry.
+- Push images to the GitHub Packages Docker registry. <- TESTING
 - Write end-user instructions for running images pulled from GitHub registry.
