@@ -6,7 +6,6 @@ COPY . /build
 WORKDIR /build
 RUN mvn package -Dmaven.test.skip=true -T 2C
 
-
 FROM openjdk:11.0.11-jre-slim AS run
 
 ARG VERSION
