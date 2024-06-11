@@ -1,35 +1,80 @@
 # VRipper!
 
-This is my spin for a cross platform gallery ripper app for [vipergirls](https://vipergirls.to) website. The purpose of
-this project is to build a robust and clean application to conveniently download photo galleries using modern web
-technologies, Java + Spring boot for the back end and angular + electron for the front end.
+This is my spin for a cross-platform gallery ripper for [vipergirls.to](https://vipergirls.to).
+
+
+![GitHub Image](/image.png)
+
+
+## Requirements
+Direct access to `vipergirls.to` domain.
+
+## Installing VRipper
+
+<img src="https://github.com/stashapp/stash/raw/develop/docs/readme_assets/windows_logo.svg" width="100%" height="75"> Windows | <img src="https://github.com/stashapp/stash/raw/develop/docs/readme_assets/mac_logo.svg" width="100%" height="75"> macOS | <img src="https://github.com/stashapp/stash/raw/develop/docs/readme_assets/linux_logo.svg" width="100%" height="75"> Linux  | <img src="https://images.vexels.com/media/users/3/166401/isolated/preview/b82aa7ac3f736dd78570dd3fa3fa9e24-java-programming-language-icon-by-vexels.png" width="100%" height="75"> Java
+:---:|:---:|:---:|:---:
+[Installer (EXE)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-windows-installer-5.8.0.exe) <br /> [Installer (MSI)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-windows-installer-5.8.0.msi) <br /> [Portable (ZIP)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-windows-portable-5.8.0.zip) | [Installer (DMG)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-macos-5.8.0.dmg) <br /> [Installer (PKG)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-macos-5.8.0.pkg) <br /> [Portable (ZIP)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-macos-portable-5.8.0.zip)  | [Linux (amd64) (DEB)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-linux-5.8.0_amd64.deb) <br /> [Linux (x86_64) (RPM)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-linux-5.8.0.x86_64.rpm) <br /> [Portable (ZIP)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-linux-portable-5.8.0.zip) | [Java GUI (noarch)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-noarch-gui-5.8.0.jar) <br /> [Java Web (noarch)](https://github.com/death-claw/vripper-project/releases/download/5.8.0/vripper-noarch-web-5.8.0.jar)
+
+Source code and previous versions are available on the [Releases page](https://github.com/death-claw/vripper-project/releases).  
+
+Application data (application logs, settings and persisted data) is stored in:  
+* Windows --> `C:\USERS\<your Windows username>\vripper` 
+* Linux and macOS --> `HOME_FOLDER/.config/vripper`
+
+
+## Important Note About Proxies
+The use of proxies within VRipper is worthless, please stop using them **for now**. You will get **403 error** codes.  
+
+**403** is a response code coming from Cloudflare to block VRipper from accessing the site, Cloudflare is doing the job it is supposed to do, which is blocking automated requests from accessing the site. 
+
+If your ISP is blocking access to `vipergirls.to` domain, consider using a VPN or [Cloudflare WARP](https://one.one.one.one/) to bypass the block.
+
+## Supported Image Hosts
+The following hosts are supported:
+* acidimg.cc  
+* imagetwist.com  
+* imagezilla.com  
+* imgspice.com  
+* imagebam.com  
+* imgbox.com  
+* imx.to  
+* pimpandhost.com  
+* pixhost.to  
+* pixxxels.cc  
+* turboimagehost.com  
+* postimg.cc  
+* imagevenue.com  
+* pixroute.to  
+* vipr.im  
+
+## Instructions to run from Jar file
+You need Java 21+, you can download from https://adoptium.net/
+
+Download the latest jar file from the Release page, open a command prompt and run the jar file using the following command
+
+For the GUI app
+
+    javaw -jar vripper-gui.jar
+
+For the WEB app
+
+    java -jar vripper-web.jar
+
+Application data (application logs, settings and persisted data) is stored in the location where you launched the jar for both GUI and WEB
+
 
 ## How to build
 
-You need a recent version of maven 3.6.1+.
+You need JDK 21 and a recent version of maven 3.8.x+
 
-The application support 2 build modes:
+To build, run the following command:
 
-- Desktop app: Self contained app, built with electron includes Java runtimes.
-- Server app: Depends on Java runtimes, you need a web browser to access the app UI.
+    mvn clean install
 
-Most people will be interested only on the desktop app, however if you have a nas or a server, the server app is there
-for you.
+Build artifact is located under
 
-To build the server app:
+    vripper-project\vripper-gui\target\vripper-gui-{{version}}-jar-with-dependencies.jar
 
-    mvn clean install -DskipTests
+Copy the artifact into any other folder and run:
 
-To build the desktop app:
-
-    mvn clean install -Pelectron -DskipTests
-
-Maven will automatically handle front end compilation. However, for development, you will need to install a recent
-version of nodejs on your system.
-
-If you feel generous and want to support me, you can donate some coins, and I would be very grateful 🙏
-
-I accept [PayPal](https://www.paypal.com/myaccount/transfer/homepage/buy/preview) donations, following is my email
-address
-
-    dev.vripper@gmail.com
+    java -jar vripper-gui-{{version}}-jar-with-dependencies.jar

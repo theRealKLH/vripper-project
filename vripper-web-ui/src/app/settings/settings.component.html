@@ -1,0 +1,273 @@
+<h2 mat-dialog-title>Settings</h2>
+<mat-dialog-content
+  class="mat-typography"
+  style="min-width: 50vw; min-height: 50vh">
+  <mat-tab-group animationDuration="0ms" dynamicHeight="true">
+    <mat-tab label="Download">
+      <form
+        [formGroup]="downloadSettingsForm"
+        autocomplete="off"
+        style="
+          display: flex;
+          flex-direction: column;
+          padding-top: 20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        ">
+        <mat-form-field appearance="outline">
+          <mat-label>Download Path</mat-label>
+          <input
+            formControlName="downloadPath"
+            matInput
+            name="downloadPath"
+            required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label
+            >Auto queue thread if post count is below or equal to</mat-label
+          >
+          <input
+            formControlName="autoQueueThreshold"
+            matInput
+            name="autoQueueThreshold"
+            min="0"
+            required />
+        </mat-form-field>
+
+        <div style="display: flex; align-items: center">
+          <mat-checkbox
+            color="primary"
+            formControlName="autoStart"
+            name="autoStart"
+            >Auto start downloads
+          </mat-checkbox>
+          <mat-icon
+            matTooltip="Gallery download will start as soon as it is added to the download queue, download will not automatically start otherwise"
+            >info</mat-icon
+          >
+        </div>
+
+        <div style="display: flex; align-items: center">
+          <mat-checkbox
+            color="primary"
+            formControlName="forumSubfolder"
+            name="forumSubfolder"
+            >Save posts in sub folders
+          </mat-checkbox>
+          <mat-icon
+            matTooltip="Gallery will be downloaded in sub folders based on the forum section they belong to"
+            >info</mat-icon
+          >
+        </div>
+
+        <div style="display: flex; align-items: center">
+          <mat-checkbox
+            color="primary"
+            formControlName="threadSubLocation"
+            name="threadSubLocation"
+            >Create a subfolder per thread
+          </mat-checkbox>
+          <mat-icon
+            matTooltip="Gallery will be downloaded inside a sub folder based on the thread they belong to"
+            >info</mat-icon
+          >
+        </div>
+
+        <div style="display: flex; align-items: center">
+          <mat-checkbox
+            color="primary"
+            formControlName="forceOrder"
+            name="forceOrder"
+            >Order images
+          </mat-checkbox>
+          <mat-icon
+            matTooltip="Downloaded images will be ordered by adding a number at the start of the filename e.g 001_,002_..."
+            >info</mat-icon
+          >
+        </div>
+
+        <div style="display: flex; align-items: center">
+          <mat-checkbox
+            color="primary"
+            formControlName="appendPostId"
+            name="appendPostId"
+            >Append post id to download folder
+          </mat-checkbox>
+          <mat-icon
+            matTooltip="Downloaded gallery name will include the post id at the end"
+            >info</mat-icon
+          >
+        </div>
+
+        <div style="display: flex; align-items: center">
+          <mat-checkbox
+            color="primary"
+            formControlName="clearCompleted"
+            name="clearCompleted"
+            >Clear Finished
+          </mat-checkbox>
+          <mat-icon
+            matTooltip="Galleries will be automatically removed from the download queue once successfully completed"
+            >info</mat-icon
+          >
+        </div>
+      </form>
+    </mat-tab>
+    <mat-tab label="Connection">
+      <form
+        [formGroup]="connectionSettingsForm"
+        autocomplete="off"
+        style="
+          display: flex;
+          flex-direction: column;
+          padding-top: 20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        ">
+        <mat-form-field appearance="outline">
+          <mat-label>Global concurrent downloads</mat-label>
+          <input
+            formControlName="maxConcurrentPerHost"
+            matInput
+            max="12"
+            min="0"
+            name="maxConcurrentPerHost"
+            required
+            type="number" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Concurrent downloads per host</mat-label>
+          <input
+            formControlName="maxGlobalConcurrent"
+            matInput
+            max="4"
+            min="1"
+            name="maxGlobalConcurrent"
+            required
+            type="number" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Connection timeout</mat-label>
+          <input
+            formControlName="timeout"
+            matInput
+            max="300"
+            min="1"
+            name="timeout"
+            required
+            type="number" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Maximum attempts</mat-label>
+          <input
+            formControlName="maxAttempts"
+            matInput
+            max="10"
+            min="1"
+            name="maxAttempts"
+            required
+            type="number" />
+        </mat-form-field>
+      </form>
+    </mat-tab>
+    <mat-tab label="ViperGirls">
+      <form
+        [formGroup]="viperGirlsSettingsForm"
+        autocomplete="off"
+        style="
+          display: flex;
+          flex-direction: column;
+          padding-top: 20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        ">
+        <mat-form-field appearance="outline">
+          <mat-label>Select a proxy</mat-label>
+          <mat-select formControlName="host" name="host">
+            <mat-option
+              *ngFor="let mirror of mirrors | async"
+              [value]="mirror"
+              >{{ mirror }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-slide-toggle
+          color="primary"
+          formControlName="login"
+          name="login"
+          style="padding-bottom: 20px">
+          Enable ViperGirls Authentication
+        </mat-slide-toggle>
+
+        <div
+          *ngIf="viperGirlsSettingsForm.controls['login'].value"
+          style="display: flex; flex-direction: column">
+          <mat-form-field appearance="outline">
+            <mat-label>ViperGirls Username</mat-label>
+            <input formControlName="username" matInput name="username" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>ViperGirls Password</mat-label>
+            <input
+              formControlName="password"
+              matInput
+              name="password"
+              type="password" />
+          </mat-form-field>
+
+          <div style="display: flex; align-items: center">
+            <mat-checkbox color="primary" formControlName="thanks" name="thanks"
+              >Send a like to poster
+            </mat-checkbox>
+            <mat-icon matTooltip="Automatically send a like to the poster"
+              >info</mat-icon
+            >
+          </div>
+        </div>
+      </form>
+    </mat-tab>
+    <mat-tab label="System">
+      <form
+        [formGroup]="systemSettingsForm"
+        autocomplete="off"
+        style="
+          display: flex;
+          flex-direction: column;
+          padding-top: 20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        ">
+        <mat-form-field appearance="outline">
+          <mat-label>Temporary Path</mat-label>
+          <input formControlName="tempPath" matInput name="tempPath" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Cache Path</mat-label>
+          <input
+            formControlName="cachePath"
+            matInput
+            name="cachePath"
+            required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Maximum log entries</mat-label>
+          <input
+            formControlName="maxEventLog"
+            matInput
+            max="10000"
+            min="100"
+            name="maxEventLog"
+            required
+            type="number" />
+        </mat-form-field>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button (click)="save()" mat-flat-button color="primary">Save</button>
+</mat-dialog-actions>
