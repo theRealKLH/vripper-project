@@ -34,7 +34,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          ref: docker
+          ref: v5-docker
           fetch-depth: 0
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
