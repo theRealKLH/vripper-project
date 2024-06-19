@@ -1,0 +1,11 @@
+services:
+
+  vripper:
+#    container_name: vripper
+    image: ghcr.io/therealklh/vripper-project:latest
+    ports:
+      - "8080:8080/tcp"
+    volumes:
+      - "./base:/vripper/base"
+      - "./downloads:/vripper/downloads"
+    restart: "unless-stopped"
