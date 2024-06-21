@@ -6,7 +6,7 @@ COPY . /build
 WORKDIR /build
 RUN mvn clean package -Dmaven.test.skip=true
 
-FROM eclipse-temurin:21-jre-alpine AS run
+FROM eclipse-temurin:21 AS run
 
 ARG VERSION
 ENV VERSION=${VERSION:-5.8.0}
